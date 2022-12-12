@@ -22,9 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -48,23 +46,24 @@ public class AuthController {
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
-		
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 		List<String> roles = userDetails.getAuthorities().stream()
 				.map(GrantedAuthority::getAuthority)
 				.collect(Collectors.toList());
-
+		Date date=new Date();
+		Optional<User> user=userRepository.findByUsername(userDetails.getUsername());
+		user.get().setDateOfLastLogOn(date);
+		userRepository.save(user.get());
 		return ResponseEntity.ok(new JwtResponse(jwt,
 												 userDetails.getId(), 
 												 userDetails.getUsername(), 
-												 userDetails.getEmail(), 
-												 roles));
+												 userDetails.getEmail(),
+												 roles,userDetails.getDateOfLastLogOn()));
 	}
 
 	@PostMapping("/signup")
@@ -105,6 +104,7 @@ public class AuthController {
 			});
 		}
 		user.setRoles(roles);
+		user.setDateOfLastLogOn(new Date());
 		userRepository.save(user);
 		return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
 	}

@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -18,6 +19,8 @@ public class UserDetailsImpl implements UserDetails {
 
 	private String username;
 
+	private Date dateOfLastLogOn;
+
 	private String mail;
 
 	@JsonIgnore
@@ -25,12 +28,13 @@ public class UserDetailsImpl implements UserDetails {
 
 	private Collection<? extends GrantedAuthority> authorities;
 
-	public UserDetailsImpl(Long  id, String username, String email, String password,
+	public UserDetailsImpl(Long  id,Date dateOfLastLogOn, String username, String email, String password,
 			Collection<? extends GrantedAuthority> authorities) {
 		this.id = id;
 		this.username = username;
 		this.mail = email;
 		this.password = password;
+		this.dateOfLastLogOn=dateOfLastLogOn;
 		this.authorities = authorities;
 	}
 
@@ -40,10 +44,11 @@ public class UserDetailsImpl implements UserDetails {
 				.collect(Collectors.toList());
 
 		return new UserDetailsImpl(
-				user.getId(), 
+				user.getId(),
+				user.getDateOfLastLogOn(),
 				user.getUsername(), 
 				user.getMail(),
-				user.getPassword(), 
+				user.getPassword(),
 				authorities);
 	}
 
@@ -58,6 +63,14 @@ public class UserDetailsImpl implements UserDetails {
 
 	public String getEmail() {
 		return mail;
+	}
+
+	public void setDateOfLastLogOn(Date dateOfLastLogOn) {
+		this.dateOfLastLogOn = dateOfLastLogOn;
+	}
+
+	public Date getDateOfLastLogOn(){
+		return dateOfLastLogOn;
 	}
 
 	@Override

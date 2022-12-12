@@ -1,5 +1,6 @@
 package com.example.eurekaclient1.Model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,15 +9,22 @@ import java.util.List;
 
 @Getter
 @Setter
-@Entity
+
 public class Sentiment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
-    private String verdict;
-    private Double polarity;
+    private SentimentPart sentiment;
+    private List<EntityPart> entities;
 
-    private String entityType;
-    private String entityName;
+    @Override
+    public String toString() {
+        return "Sentiment{" +
+                "sentiment=" + sentiment +
+                ", entities=" + entities +
+                '}';
+    }
+
+    public Sentiment(){
+
+    }
+
 }

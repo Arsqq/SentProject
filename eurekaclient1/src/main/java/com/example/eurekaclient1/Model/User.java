@@ -1,10 +1,12 @@
 package com.example.eurekaclient1.Model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,6 +19,8 @@ public class User  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    private Date dateOfLastLogOn;
 
     @NotBlank
     private String username;
@@ -44,6 +48,7 @@ public class User  {
         this.password = password;
     }
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "moderator",cascade = CascadeType.ALL,fetch =FetchType.LAZY)
     private Set<SentimentReport> performedAnalyzes;
 }

@@ -1,7 +1,14 @@
 package com.example.eurekaclient1.Controllers;
+import com.example.eurekaclient1.Model.Sentiment;
+import com.example.eurekaclient1.Model.User;
+import com.example.eurekaclient1.Service.ReportService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
@@ -14,6 +21,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api/sentiment")
@@ -22,6 +32,9 @@ public class SentimentController {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private ReportService reportService;
 
     @PostMapping("/flaskCall")
     public String sentimentServiceCall(@RequestBody String query)  {
@@ -35,6 +48,14 @@ public class SentimentController {
         public String getTest(){
         return "test";
         }
+
+    @RequestMapping(value = "/getSentimentList", method = RequestMethod.GET)
+    public List<Sentiment> getSentiments() throws JsonProcessingException {
+        List<Sentiment> sentiments;
+        sentiments=reportService.generateSentimentReport();
+        System.out.println(sentiments);
+        return sentiments;
+    }
 
     @PostMapping("/uploadFile")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
@@ -50,5 +71,8 @@ public class SentimentController {
 
         return new ResponseEntity<>(sb, HttpStatus.OK);
     }
+
+
+
 }
 
