@@ -1,10 +1,13 @@
 package com.example.eurekaclient1.Service;
 
+import com.example.eurekaclient1.Model.CommonWords;
 import com.example.eurekaclient1.Model.Sentiment;
 import com.example.eurekaclient1.Model.SentimentReport;
 import com.example.eurekaclient1.Model.User;
 import com.example.eurekaclient1.Repo.SentimentReportRepo;
 import com.example.eurekaclient1.Repo.UserRepository;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -81,5 +84,19 @@ public class ReportService {
         sentimentReport.setPositivePercent(positivePercent(sentiments));
         sentimentReportRepo.save(sentimentReport);
         return sentiments;
+    }
+
+    public List<CommonWords> generateCommonWords() throws JsonProcessingException {
+        ResponseEntity<String> response =
+                restTemplate.getForEntity(
+                        "http://flaskservice/words",
+                        String.class);
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        mapper.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, false);
+        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
+        List<CommonWords> commonWords=mapper.readValue(response.getBody(), new TypeReference<>() {
+        });
+        return commonWords;
     }
 }

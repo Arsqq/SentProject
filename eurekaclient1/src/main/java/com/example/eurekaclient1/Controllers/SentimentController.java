@@ -1,4 +1,5 @@
 package com.example.eurekaclient1.Controllers;
+import com.example.eurekaclient1.Model.CommonWords;
 import com.example.eurekaclient1.Model.Sentiment;
 import com.example.eurekaclient1.Model.User;
 import com.example.eurekaclient1.Service.ReportService;
@@ -53,8 +54,15 @@ public class SentimentController {
     public List<Sentiment> getSentiments() throws JsonProcessingException {
         List<Sentiment> sentiments;
         sentiments=reportService.generateSentimentReport();
-        System.out.println(sentiments);
+        System.out.println(sentiments.size());
         return sentiments;
+    }
+
+    @RequestMapping(value = "/getCommonWords",method = RequestMethod.GET)
+    public List<CommonWords> getCommonWords() throws JsonProcessingException {
+        List<CommonWords> commonWords;
+        commonWords=reportService.generateCommonWords();
+        return commonWords;
     }
 
     @PostMapping("/uploadFile")
