@@ -7,11 +7,13 @@ public class SentimentPart {
 
     private double polarity;
     private String sentiment;
+    private String textContent;
 
     @Override
     public String toString() {
         return "polarity=" + polarity +
                 ", sentiment='" + sentiment + '\'' +
+                ", textContent='" + textContent + '\'' +
                 '}';
     }
 }
