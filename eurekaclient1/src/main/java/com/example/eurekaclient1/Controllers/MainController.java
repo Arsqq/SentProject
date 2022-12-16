@@ -5,10 +5,9 @@ import com.example.eurekaclient1.Model.User;
 import com.example.eurekaclient1.Repo.SentimentReportRepo;
 import com.example.eurekaclient1.Repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,4 +31,12 @@ public class MainController {
     public List<SentimentReport> listReports(){
         return sentimentReportRepo.findAll();
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id){
+        userRepository.deleteById(id);
+        return new ResponseEntity<>("User successfully deleted!", HttpStatus.OK);
+    }
+
+
 }

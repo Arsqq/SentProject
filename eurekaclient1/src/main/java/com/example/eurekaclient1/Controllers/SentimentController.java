@@ -65,6 +65,19 @@ public class SentimentController {
         return commonWords;
     }
 
+    @PostMapping("/export")
+    public ResponseEntity<?> exportFile(@RequestBody List<Sentiment> listOfSentiments){
+        StringBuilder sb = new StringBuilder();
+        for (var item : listOfSentiments) {
+            sb.append(item.toString()).append("\n");
+        }
+        return new ResponseEntity<>(sb, HttpStatus.OK);
+    }
+
+
+
+
+
     @PostMapping("/uploadFile")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         InputStreamReader isReader = new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8);

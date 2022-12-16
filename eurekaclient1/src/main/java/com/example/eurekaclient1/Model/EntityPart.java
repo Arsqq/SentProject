@@ -7,5 +7,14 @@ import lombok.Data;
 public class EntityPart {
 
     private String name;
+
     private String type;
+
+    @Override
+    public String toString() {
+        return "{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

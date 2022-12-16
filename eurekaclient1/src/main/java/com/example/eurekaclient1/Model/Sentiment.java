@@ -14,12 +14,14 @@ public class Sentiment {
 
     private SentimentPart sentiment;
     private List<EntityPart> entities;
+    private String textContent;
 
     @Override
     public String toString() {
         return "Sentiment{" +
                 "sentiment=" + sentiment +
                 ", entities=" + entities +
+                ", OriginalText='" + textContent + '\'' +
                 '}';
     }
 
