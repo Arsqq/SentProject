@@ -11,6 +11,7 @@ import com.example.eurekaclient1.payload.request.LoginRequest;
 import com.example.eurekaclient1.payload.request.SignupRequest;
 import com.example.eurekaclient1.payload.response.JwtResponse;
 import com.example.eurekaclient1.payload.response.MessageResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,7 +22,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 

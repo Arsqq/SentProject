@@ -1,9 +1,10 @@
 package com.example.eurekaclient1.Model;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+
 
 @Entity
 @Getter

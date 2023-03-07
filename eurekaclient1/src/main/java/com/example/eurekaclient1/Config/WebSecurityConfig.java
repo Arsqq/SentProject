@@ -17,8 +17,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableGlobalMethodSecurity(
-        prePostEnabled = true)
 public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -48,6 +46,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
         return authConfig.getAuthenticationManager();
     }
 
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -58,9 +57,9 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/sentiment/**").permitAll()
-                .antMatchers("api/allUsers/**").permitAll();
+                .authorizeHttpRequests().requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/sentiment/**").permitAll()
+                .requestMatchers("api/allUsers/**").hasAuthority("ROLE_ADMIN");
 
 
         http.authenticationProvider(authenticationProvider());

@@ -45,11 +45,6 @@ public class SentimentController {
         return restTemplate.postForObject("http://flaskservice/sentiment", s, String.class);
         }
 
-        @GetMapping("testGet")
-        public String getTest(){
-        return "test";
-        }
-
     @RequestMapping(value = "/getSentimentList", method = RequestMethod.GET)
     public List<Sentiment> getSentiments() throws JsonProcessingException {
         List<Sentiment> sentiments;

@@ -1,14 +1,12 @@
 package com.example.eurekaclient1.Model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.tomcat.jni.Address;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Component

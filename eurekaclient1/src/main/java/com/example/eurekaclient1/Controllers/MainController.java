@@ -6,7 +6,9 @@ import com.example.eurekaclient1.Repo.SentimentReportRepo;
 import com.example.eurekaclient1.Repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,9 +24,10 @@ public class MainController {
     @Autowired
     SentimentReportRepo sentimentReportRepo;
 
-    @GetMapping("/listUsers")
-    public List<User> listUsers(){
-        return userRepository.findAll();
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping(value = "/listUsers",produces = "application/json")
+    public ResponseEntity<List<User>> listUsers(){
+        return ResponseEntity.ok(userRepository.findAll());
     }
 
     @GetMapping("/listReports")
@@ -37,6 +40,8 @@ public class MainController {
         userRepository.deleteById(id);
         return new ResponseEntity<>("User successfully deleted!", HttpStatus.OK);
     }
+
+
 
 
 }
